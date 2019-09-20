@@ -48,7 +48,7 @@ const ButtonContainer = styled.div`
    justify-content: flex-end;
 `;
 
-function LoginForm() {
+function LoginForm () {
    return (
       <FormOverlay>
          <MainForm>
@@ -88,8 +88,11 @@ export default withFormik({
    mapPropsToValues: values => {
       return {
          username: values.username || "",
-         attempt1: values.username || "",
-         attempt2: values.username || ""
+         attempt1: values.attempt1 || "",
+         attempt2: values.attempt2 || ""
       };
+   },
+   handleSubmit: values => {
+      console.log(`Register with: \n"${JSON.stringify(values, null, 3)}`);
    }
 })(LoginForm);
