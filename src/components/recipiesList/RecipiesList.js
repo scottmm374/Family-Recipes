@@ -1,8 +1,14 @@
-import React from 'react'
+import React from 'react';
+import styled from 'styled-components';
+
+const Div = styled.div`
+    display: flex;
+    flex-direction: column;
+`
 
 export default function RecipiesList() {
     return (
-        <div>
+        <Div>
             <select>
                 <option value='' disabled selected>Breakfast</option>
                 <option>1</option>
@@ -43,6 +49,6 @@ export default function RecipiesList() {
                 <option>4</option>
                 <option>5</option>
             </select>
-        </div>
+        </Div>
     )
 }
