@@ -7,9 +7,15 @@ import axios from "axios";
 
 import "semantic-ui-css/semantic.min.css";
 
+const colors = {
+   attention: "#ed7769",
+   accent: "#4b719c",
+   subtle: "#97a1a5",
+   textLight: "#efedec",
+   textDark: "#594236"
+};
 const FormOverlay = styled.div`
-   /* background-color: #efedec80; */
-   background: #f26656;
+   background: #f26656b2;
    background: linear-gradient(74deg, #f26656b2 0%, #4b559cb2 100%);
    z-index: 1;
    width: 100%;
@@ -21,68 +27,88 @@ const FormOverlay = styled.div`
 
    display: flex;
    justify-content: center;
-   align-items: center;
 `;
 const MainForm = styled(Form)`
-   background-color: #efedec;
+   background-color: ${colors.textLight};
    border-radius: 20px;
    width: 300px;
-   height: 500px;
-   padding: 3rem 1rem;
+   height: 480px;
+   padding: 3rem 2rem;
+   margin-top: 5%;
 
    display: flex;
    flex-direction: column;
    justify-content: flex-start;
    align-items: center;
 `;
+const UIContainer = styled.div`
+   margin: 2rem 0;
+   width: 100%;
+`;
 const UserInput = styled(Field)`
-   /* background-color: transparent;
+   background-color: transparent;
    border: none;
-   border-bottom: 2px solid #594236; */
+   border-bottom: 2px solid ${colors.textDark};
+   color: ${colors.textDark};
    font-size: 1.5rem;
-   margin: 0.75rem;
+   margin: 0.25rem 0 1.75rem;
+   outline: none;
    width: 100%;
 `;
-const ButtonContainer = styled.div`
-   width: 100%;
+const UILabel = styled.label`
+   color: ${colors.textDark};
+`;
+// const ButtonContainer = styled.div`
+//    width: 100%;
 
-   display: flex;
-   justify-content: flex-end;
-`;
+//    display: flex;
+//    justify-content: flex-end;
+// `;
 
 function LoginForm ({token}) {
    return (
       <FormOverlay>
          <MainForm>
-            <Header as="h2" icon textAlign="center">
+            <Header as="h1" icon textAlign="center">
                <Icon name="sign-in" circular/>
                <Header.Content>Login</Header.Content>
                {/* <Icon name="signup" circular/>
                <Header.Content>Login</Header.Content> */}
             </Header>
             {/* <label>Username</label> */}
-            <UserInput 
-               name="username" 
-               type="text" 
-               placeholder="Enter Your User Name"
-            />
-            <UserInput 
-               name="password1"
-               type="password" 
-               placeholder="Type your password"
-            />
-            {
-               (token)
-               ?  <UserInput 
-                     name="password2"
-                     type="password" 
-                     placeholder="Retype your password"
+            <UIContainer>
+               <UILabel>Username
+                  <UserInput 
+                     name="username" 
+                     type="text" 
+                     placeholder="Enter Your User Name"
                   />
-               :  null
-            }
-            <ButtonContainer>
-               <Button size="medium" color="blue" type="submit" >Login</Button>
-            </ButtonContainer>
+               </UILabel>
+               <UILabel>Password
+                  <UserInput 
+                     name="password1"
+                     type="password" 
+                     placeholder="Type your password"
+                  />
+               </UILabel>
+               {
+                  (token)
+                  ?  <UILabel>Password 2
+                        <UserInput 
+                           name="password2"
+                           type="password" 
+                           placeholder="Retype your password"
+                        />
+                     </UILabel>
+                  :  null
+               }
+            </UIContainer>
+            <Button fluid animated="fade" color="blue" type="submit">
+               <Button.Content visible>Login</Button.Content>
+               <Button.Content hidden>
+                  <Icon name="sign-in"/>
+               </Button.Content>
+            </Button>
          </MainForm>
       </FormOverlay>
    );
