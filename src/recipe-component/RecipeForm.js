@@ -1,8 +1,66 @@
 import React, { useState, useEffect } from 'react'
 import { withFormik, Form, Field } from 'formik';
+import styled from "styled-components";
+import {Header, Icon, Button} from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
 import * as yup from 'yup';
-import { Container } from 'semantic-ui-react'
 import axios from 'axios';
+
+// Styling 
+
+const colors = {
+    attention: "#ed7769",
+    accent: "#4b719c",
+    subtle: "#97a1a5",
+    textLight: "#efedec",
+    textDark: "#594236"
+ };
+
+ const FormOverlay = styled.div`
+    background: #f26656b2;
+    background: linear-gradient(74deg, #f26656b2 0%, #4b559cb2 100%);
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+ `;
+ const MainForm = styled(Form)`
+    background-color: ${colors.textLight};
+    border-radius: 20px;
+    width: 300px;
+    height: 480px;
+    padding: 3rem 2rem;
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+ `;
+ const UIContainer = styled.div`
+    margin: 2rem 0;
+    width: 100%;
+ `;
+ const UserInput = styled(Field)`
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid ${colors.textDark};
+    color: ${colors.textDark};
+    font-size: 1.5rem;
+    margin: 0.25rem 0 1.75rem;
+    outline: none;
+    width: 100%;
+ `;
+ const UILabel = styled.label`
+    color: ${colors.textDark};
+ `;
+
+
+ // Main form
 
 const RecipeForm = ({ errors, touched, status }) => {
     const [recipes, setRecipes] = useState([])
@@ -17,40 +75,49 @@ const RecipeForm = ({ errors, touched, status }) => {
 
     return (
 
-        <Container>
-            <Form>
+  
+            <FormOverlay>
+                <MainForm>
+                <UIContainer>
                 <div className="input-field">
                     {touched.title && errors.title && <p>{errors.title}</p>}
-                        <Field type="text" name="title" placeholder="Title" />
+                        <UserInput  type="text" name="title" placeholder="Title" />
                 </div>
                 <div className="input-field">
                     {touched.author && errors.author && <p>{errors.author}</p>}
-                        <Field type="text" name="author" placeholder="Author" />
+                        <UserInput  type="text" name="author" placeholder="Author" />
                 </div>
                 <div className="input-field">
                     {touched.ingredients && errors.ingredients && <p>{errors.ingredients}</p>}
-                        <Field component="textarea" name="ingredients" placeholder="Ingredients" />
+                        <UserInput  component="textarea" name="ingredients" placeholder="Ingredients" />
                 </div>
                 <div className="input-field">
                     {touched.instructions && errors.instructions && <p>{errors.instructions}</p>}
-                        <Field component="textarea" name="instructions" placeholder="Instructions" />
+                        <UserInput  component="textarea" name="instructions" placeholder="Instructions" />
                 </div>
 
-                // Just intial field for catagory
+                {/* // Just intial field for catagory */}
                 <div className="input-field">
                     {touched.catagories && errors.catagories && <p>{errors.catagories}</p>}
-                        <Field component="select" name="catagories" placeholder="Catagory">
+                        <UserInput  component="select" name="catagories" placeholder="Catagory">
                             <option value="dinner">Dinner</option>
                             <option value="lunch">Lunch</option>
                             <option value="breakfast">Breakfast</option>
                             <option value="desert">Desert</option>
-                            </Field> 
+                            </UserInput > 
                 </div>
-                <div>
-                    <button type="submit">Submit</button>
-                </div>
-            </Form>
-        </Container>
+                
+                <Button fluid animated="fade" color="blue" type="submit">
+               <Button.Content visible>Add Recipe</Button.Content>
+               <Button.Content hidden>
+               </Button.Content>
+            </Button>
+               
+               
+                </UIContainer>
+                </MainForm>
+            </FormOverlay>
+       
     );
 }
 
