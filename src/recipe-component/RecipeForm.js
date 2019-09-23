@@ -41,6 +41,7 @@ const MainForm = styled(Form)`
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    box-shadow: 0 4px 15px black;
  `;
 const UIContainer = styled.div`
     margin: 2rem 0;
@@ -58,13 +59,18 @@ const UserInput = styled(Field)`
     width: 100%;
  `;
 
-// Wont work! 
+
 const NewHeader = styled.h4`
-font-size: 2.5rem;
+    font-size: 2.5rem;
     padding-bottom: 2rem;
     color: ${colors.attention};
 `;
 
+const Error = styled.p`
+    font-size: 1.0rem;
+    color: red;
+`;
+ 
 
 // Main form
 
@@ -90,24 +96,24 @@ const RecipeForm = ({ errors, touched, status }) => {
 
                 <UIContainer>
                     <div>
-                        {touched.title && errors.title && <p className="error">{errors.title}</p>}
+                        {touched.title && errors.title && <Error>{errors.title}</Error>}
                         <UserInput type="text" name="title" placeholder=" Recipe Title" />
                     </div>
                     <div>
-                        {touched.author && errors.author && <p>{errors.author}</p>}
+                        {touched.author && errors.author && <Error>{errors.author}</Error>}
                         <UserInput type="text" name="author" placeholder="Recipe Author" />
                     </div>
                     <div>
-                        {touched.ingredients && errors.ingredients && <p>{errors.ingredients}</p>}
+                        {touched.ingredients && errors.ingredients && <Error>{errors.ingredients}</Error>}
                         <UserInput component="textarea" name="ingredients" placeholder="List all Ingredients seperated by a comma" />
                     </div>
                     <div>
-                        {touched.instructions && errors.instructions && <p>{errors.instructions}</p>}
+                        {touched.instructions && errors.instructions && <Error>{errors.instructions}</Error>}
                         <UserInput component="textarea" name="instructions" placeholder="Cooking Instructions" />
                     </div>
 
                     <div>
-                        {touched.catagories && errors.catagories && <p>{errors.catagories}</p>}
+                        {touched.catagories && errors.catagories && <Error>{errors.catagories}</Error>}
                         <UserInput component="select" name="catagories" placeholder="Catagories">
                             <option value="select">Select one</option>
                             <option value="dinner">Dinner</option>
@@ -158,31 +164,31 @@ const FormikForm = withFormik({
         let newRecipe = values;
         newRecipe.ingredients = newRecipe.ingredients.split(",")
         // console.log(`Recipe: \n"${JSON.stringify(values, null, 3)}`)
-        axios
-            .post("https://reqres.in/api/recipes", newRecipe)
-            .then(res => {
-                // console.log(res, "res");
-                setStatus(res.data);
-                resetForm();
-                setSubmitting(false)
-                return new Promise((resolve) => {
-                    resolve(res)
-                });
-            })
-            .then(res => {
-                console.log(`post complete: \n"${JSON.stringify(res, null, 3)}`)
-                // axios
-                // .get(`https://reqres.in/api/recipes/${res.data.id}`)
-                // .then(res => {
-                //     console.log("responce", res);
-                // })
+axios
+    .post("https://reqres.in/api/recipes", newRecipe)
+    .then(res => {
+        // console.log(res, "res");
+        setStatus(res.data);
+        resetForm();
+        setSubmitting(false)
+        return new Promise((resolve) => {
+            resolve(res)
+        });
+    })
+    .then(res => {
+        console.log(`post complete: \n"${JSON.stringify(res, null, 3)}`)
+        // axios
+        // .get(`https://reqres.in/api/recipes/${res.data.id}`)
+        // .then(res => {
+        //     console.log("responce", res);
+        // })
 
-            })
-            .catch(err => {
-                console.log(err);
-                setSubmitting(false);
-            })
+    })
+    .catch(err => {
+        console.log(err);
+        setSubmitting(false);
+    })
     }
-})(RecipeForm)
+}) (RecipeForm)
 
 export default FormikForm;
