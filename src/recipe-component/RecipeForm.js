@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { withFormik, Form, Field } from 'formik';
 import styled from "styled-components";
-import { Header, Icon, Button } from "semantic-ui-react";
+import { Header, Button } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import * as yup from 'yup';
 import axios from 'axios';
@@ -32,10 +32,11 @@ const FormOverlay = styled.div`
 const MainForm = styled(Form)`
     background-color: ${colors.textLight};
     border-radius: 20px;
-    width: 300px;
-    height: 480px;
+    width: 900px;
+    height: 800px;
     padding: 3rem 2rem;
     margin-top: 5%;
+    margin-bottom: 5%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -51,13 +52,18 @@ const UserInput = styled(Field)`
     border-bottom: 2px solid ${colors.textDark};
     color: ${colors.textDark};
     font-size: 1.5rem;
-    margin: 0.25rem 0 1.75rem;
+    // margin: 0.25rem 0 1.75rem;
+    margin-bottom: 5.0rem;
     outline: none;
     width: 100%;
  `;
-const UILabel = styled.label`
-    color: ${colors.textDark};
- `;
+
+// Wont work! 
+const NewHeader = styled.h4`
+font-size: 2.5rem;
+    padding-bottom: 2rem;
+    color: ${colors.attention};
+`;
 
 
 // Main form
@@ -78,27 +84,30 @@ const RecipeForm = ({ errors, touched, status }) => {
 
         <FormOverlay>
             <MainForm>
+                <Header>
+                    <NewHeader>Add Family Recipe</NewHeader>
+                </Header>
+
                 <UIContainer>
-                    <div className="input-field">
-                        {/* {touched.title && errors.title && <p>{errors.title}</p>} */}
-                        <UserInput type="text" name="title" placeholder="Title" />
+                    <div>
+                        {touched.title && errors.title && <p className="error">{errors.title}</p>}
+                        <UserInput type="text" name="title" placeholder=" Recipe Title" />
                     </div>
-                    <div className="input-field">
-                        {/* {touched.author && errors.author && <p>{errors.author}</p>} */}
-                        <UserInput type="text" name="author" placeholder="Author" />
+                    <div>
+                        {touched.author && errors.author && <p>{errors.author}</p>}
+                        <UserInput type="text" name="author" placeholder="Recipe Author" />
                     </div>
-                    <div className="input-field">
-                        {/* {touched.ingredients && errors.ingredients && <p>{errors.ingredients}</p>} */}
-                        <UserInput component="textarea" name="ingredients" placeholder="Ingredients" />
+                    <div>
+                        {touched.ingredients && errors.ingredients && <p>{errors.ingredients}</p>}
+                        <UserInput component="textarea" name="ingredients" placeholder="List all Ingredients seperated by a comma" />
                     </div>
-                    <div className="input-field">
-                        {/* {touched.instructions && errors.instructions && <p>{errors.instructions}</p>} */}
-                        <UserInput component="textarea" name="instructions" placeholder="Instructions" />
+                    <div>
+                        {touched.instructions && errors.instructions && <p>{errors.instructions}</p>}
+                        <UserInput component="textarea" name="instructions" placeholder="Cooking Instructions" />
                     </div>
 
-                    {/* // Just intial field for catagory */}
-                    <div className="input-field">
-                        {/* {touched.catagories && errors.catagories && <p>{errors.catagories}</p>} */}
+                    <div>
+                        {touched.catagories && errors.catagories && <p>{errors.catagories}</p>}
                         <UserInput component="select" name="catagories" placeholder="Catagories">
                             <option value="select">Select one</option>
                             <option value="dinner">Dinner</option>
@@ -110,11 +119,9 @@ const RecipeForm = ({ errors, touched, status }) => {
 
                     <Button fluid animated="fade" color="blue" type="submit">
                         <Button.Content visible>Add Recipe</Button.Content>
-                        <Button.Content hidden>
+                        <Button.Content hidden> 
                         </Button.Content>
                     </Button>
-
-
                 </UIContainer>
             </MainForm>
         </FormOverlay>
@@ -138,11 +145,11 @@ const FormikForm = withFormik({
 
 
     validationSchema: yup.object().shape({
-        title: yup.string().required("Please add Title"),
-        author: yup.string().required("Chef's name"),
+        title: yup.string().required("Please add recipe Title"),
+        author: yup.string().required("Add recipe authors name"),
         ingredients: yup.string().required("List all ingredients"),
         instructions: yup.string().required("Don't forget the instructions!"),
-        // catagory: yup.string().required(),
+        
     }),
 
 
@@ -158,11 +165,11 @@ const FormikForm = withFormik({
                 setStatus(res.data);
                 resetForm();
                 setSubmitting(false)
-                return new Promise ((resolve) => {
+                return new Promise((resolve) => {
                     resolve(res)
                 });
             })
-            .then(res=> {
+            .then(res => {
                 console.log(`post complete: \n"${JSON.stringify(res, null, 3)}`)
                 // axios
                 // .get(`https://reqres.in/api/recipes/${res.data.id}`)
