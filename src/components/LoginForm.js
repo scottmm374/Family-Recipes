@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import {Header, Icon, Button} from "semantic-ui-react";
 import { withFormik, Form, Field, ErrorMessage } from "formik";
@@ -65,7 +65,7 @@ const UILabel = styled.label`
 //    justify-content: flex-end;
 // `;
 
-function LoginForm ({token}) {
+function LoginForm () {
    return (
       <FormOverlay>
          <MainForm>
@@ -92,7 +92,7 @@ function LoginForm ({token}) {
                   />
                </UILabel>
                {
-                  (token)
+                  (false)
                   ?  <UILabel>Password 2
                         <UserInput 
                            name="password2"
@@ -117,12 +117,59 @@ function LoginForm ({token}) {
 export default withFormik({
    mapPropsToValues: values => {
       return {
+         ...values.stateProps,
          username: values.username || "",
          password1: values.attempt1 || "",
          password2: values.attempt2 || ""
       };
    },
    handleSubmit: values => {
-      console.log(`Register with: \n"${JSON.stringify(values, null, 3)}`);
+      // console.log(`Register with: \n"${JSON.stringify(values, null, 3)}`);
+      // console.log(values);
+      /* Login
+         {
+            user_id: "",
+            username: "",
+            token: ""
+         }
+      */
+
+      /* Register
+         {
+            username: "",
+            userID: "",
+            token: ""
+         }
+      */
+      axios
+         .post("https://family-cookbook-api.herokuapp.com/auth/login", {
+            username: "UserTest7",
+            password: "Password"
+         })
+         .then(response => {
+            if (response.status >= 200 && response.status <= 300) {
+               values.setLoggedIn(true);
+               values.setUserId(response.data.user_id);
+               values.setUserName(response.data.username);
+               localStorage.setItem("token", response.data.token);
+
+               return new Promise((resolve, reject) => {
+                  resolve(response);
+               });
+            } else {
+               console.error(`
+                 Status: ${response.status}
+                 Message: ${response.message}
+               `);
+            }
+         })
+         .then(response => {
+            // axios
+            //    .get("recipes")
+            console.log("Get Them REcipes!");
+         })
+         .catch(error => {
+            console.error(error);
+         });
    }
 })(LoginForm);

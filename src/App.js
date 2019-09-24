@@ -1,10 +1,32 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import LoginForm from './components/LoginForm.js';
-
-import RecipiesList from './components/recipiesList/RecipiesList'
+import RecipeForm from './components/RecipeForm.js';
+import RecipiesList from './components/RecipiesList.js';
 
 function App() {
+   const [userName, setUserName] = useState();
+   const [userId, setUserId] = useState();
+   const [recipes, setRecipes] = useState();
+   const [loggedIn, setLoggedIn] = useState(false);
+   const LoginProps = {
+      setUserId,
+      setUserName,
+      setLoggedIn,
+      setRecipes
+   };
+
+   useEffect(() => {
+      //check to see if user is already logged in
+      const userToken = localStorage.getItem("token");
+      console.log(`userToken: ${userToken}`);
+      
+      setLoggedIn(userToken || false);
+   }, []);
+   useEffect(() => {
+      console.log(`loggedIn: ${loggedIn}`);
+   }, []);
+
    return (
       <div className="App">
          <nav>
@@ -35,7 +57,7 @@ function App() {
             Clicking on this link which refers to B2B Marketing awards 
             shortlist will take you to the awards page of the customer journey.
          </p>
-         <LoginForm />
+         {!loggedIn && <LoginForm  stateProps={LoginProps} />}
       </div>
    );
 }
