@@ -1,62 +1,19 @@
 import React from 'react';
+import RecipesCard from './RecipesCard';
 import styled from 'styled-components';
 
-const Div = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 25%;
-`
 
-const Select = styled.select`
-    height: 40px;
-    text-align-last: center;
-    font-size: 25px;
-    margin-bottom: 15px;
-`
+function RecipiesList(props) {
 
-export default function RecipiesList() {
+    console.log(props);
+
     return (
-        <Div>
-            <Select>
-                <option value='' disabled selected>Breakfast</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </Select>
-            <Select>
-                <option value='' disabled selected>Lunch</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </Select>
-            <Select>
-                <option value='' disabled selected>Dinner</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </Select>
-            <Select>
-                <option value='' disabled selected>Dessert</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </Select>
-            <Select>
-                <option value='' disabled selected>Snacks</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </Select>
-        </Div>
+        <div className='cards-container'>
+            {props.data.map(card => (
+                <RecipesCard card={card} />
+            ))}
+        </div>
     )
 }
+
+export default RecipiesList
