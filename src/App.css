@@ -3,3 +3,15 @@
    max-width: 1024px;
    margin: 0 auto;
 }
+
+.App .filter-bar {
+   background-color: #ececec;
+   width: 100%;
+   max-width: 1024px;
+   padding: 5px;
+
+
+   display: flex;
+   flex-flow: row nowrap;
+   justify-content: space-evenly;
+}
