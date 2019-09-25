@@ -16,4 +16,4 @@ function RecipiesList(props) {
     )
 }
 
-export default RecipiesList
+export default RecipiesList;
