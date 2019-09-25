@@ -11,7 +11,6 @@ function App() {
    const [userId, setUserId] = useState("another thing");
    const [recipes, setRecipes] = useState([]);
    const [loggedIn, setLoggedIn] = useState(false);
-   let isLoggedIn = loggedIn;
    const UserProps = {
       setUserId,
       userName,
@@ -23,32 +22,8 @@ function App() {
    useEffect(() => {
       //check to see if user is already logged in
       const userToken = localStorage.getItem("token");
-      // console.log(`userToken: ${userToken}`);
-
-      isLoggedIn = (userToken !== null);
-      // console.log(`isLoggedIn: ${isLoggedIn}`); 
-      setLoggedIn(isLoggedIn);
+      setLoggedIn(userToken !== null);
    }, []);
-   
-//    useEffect(() => {
-//       console.log(`{
-//    userName: ${userName},
-//    userId: ${userId},
-//    recipes: ${recipes},
-//    loggedIn: ${loggedIn}
-// }`
-//       );
-//    }, [loggedIn]);
-
-//    useEffect(() => {
-//       console.log(`{
-//    userName: ${userName},
-//    userId: ${userId},
-//    recipes: ${recipes},
-//    loggedIn: ${loggedIn}
-// }`
-//       );
-//    }, [recipes]);
 
    return (
       <div className="App">
@@ -75,7 +50,7 @@ function App() {
 }            
             `);
          }} >State Variables</button> */}
-         {!isLoggedIn && <Redirect to="/login" />}
+         {!loggedIn && <Redirect to="/login" />}
 
 
          <Route exact path="/" render={ 

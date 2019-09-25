@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import styled from "styled-components";
 import {Header, Icon, Button} from "semantic-ui-react";
 import { withFormik, Form, Field, ErrorMessage } from "formik";
@@ -58,6 +58,15 @@ const UserInput = styled(Field)`
 const UILabel = styled.label`
    color: ${colors.textDark};
 `;
+const ErrorBadge = styled.p`
+   margin: 0;
+   position: absolute;
+   color: #721c24;
+   background-color: #f8d7da;
+   border-color: #f5c6cb;
+   border-radius: 4px;
+   padding: 5px 10px;
+`;
 
 function LoginForm ({errors, touched}) {
    return (
@@ -68,7 +77,7 @@ function LoginForm ({errors, touched}) {
                <Header.Content>Login</Header.Content>
             </Header>
             <UIContainer>
-               <ErrorMessage name="username" className="error" component="p" />
+               <ErrorMessage name="username" component={ErrorBadge} />
                <UILabel>Username
                   <UserInput 
                      name="username" 
@@ -76,7 +85,7 @@ function LoginForm ({errors, touched}) {
                      placeholder="Enter Your User Name"
                   />
                </UILabel>
-               <ErrorMessage name="password" className="error" component="p" />
+               <ErrorMessage name="password" component={ErrorBadge} />
                <UILabel>Password
                   <UserInput 
                      name="password"
@@ -109,7 +118,7 @@ export default withFormik({
       username: yup.string()
          .required("Please enter a username.")
          .min(3, "Your username must be at least 3 characters")
-         .matches(/^[\w]+$/, "Please no whitespace. "),
+         .matches(/^[\w]+$/, "Your username may only contain letters, numbers, and underscore. "),
       password: yup.string()
          .required("Please enter a password.")
          .min(8, "Your password must be at least 8 characters")
