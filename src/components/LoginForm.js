@@ -58,14 +58,8 @@ const UserInput = styled(Field)`
 const UILabel = styled.label`
    color: ${colors.textDark};
 `;
-// const ButtonContainer = styled.div`
-//    width: 100%;
 
-//    display: flex;
-//    justify-content: flex-end;
-// `;
-
-function LoginForm () {
+function LoginForm ({errors, touched}) {
    return (
       <FormOverlay>
          <MainForm>
@@ -74,6 +68,7 @@ function LoginForm () {
                <Header.Content>Login</Header.Content>
             </Header>
             <UIContainer>
+               <ErrorMessage name="username" className="error" component="p" />
                <UILabel>Username
                   <UserInput 
                      name="username" 
@@ -81,24 +76,14 @@ function LoginForm () {
                      placeholder="Enter Your User Name"
                   />
                </UILabel>
+               <ErrorMessage name="password" className="error" component="p" />
                <UILabel>Password
                   <UserInput 
-                     name="password1"
+                     name="password"
                      type="password" 
                      placeholder="Type your password"
                   />
                </UILabel>
-               {
-                  (false)
-                  ?  <UILabel>Password 2
-                        <UserInput 
-                           name="password2"
-                           type="password" 
-                           placeholder="Retype your password"
-                        />
-                     </UILabel>
-                  :  null
-               }
             </UIContainer>
             <Button fluid animated="fade" color="blue" type="submit">
                <Button.Content visible>Login</Button.Content>
@@ -117,10 +102,19 @@ export default withFormik({
          history: values.history,
          ...values.userProps,
          username: values.username || "",
-         password1: values.attempt1 || "",
-         password2: values.attempt2 || ""
+         password: values.password || ""
       };
    },
+   validationSchema: yup.object().shape({
+      username: yup.string()
+         .required("Please enter a username.")
+         .min(3, "Your username must be at least 3 characters")
+         .matches(/^[\w]+$/, "Please no whitespace. "),
+      password: yup.string()
+         .required("Please enter a password.")
+         .min(8, "Your password must be at least 8 characters")
+         .matches(/^[\S]+$/, "Your password may not contain whitespace")
+   }),
    handleSubmit: values => {
       /* Login
          {
@@ -140,7 +134,7 @@ export default withFormik({
 
       console.log(`Send this to auth/login: {
    username: "${values.username}",
-   password: "${values.password1}"
+   password: "${values.password}"
 }`);
 
       axios
@@ -148,7 +142,7 @@ export default withFormik({
             // username: "admin",
             // password: "password"
             username: values.username,
-            password: values.password1
+            password: values.password
          })
          .then(response => {
             values.setLoggedIn(true);
@@ -168,7 +162,6 @@ export default withFormik({
             values.history.push("/");
          })
          .catch(error => {
-            // console.error(JSON.stringify(error, null, 3));
             const msgWords = error.message.split(" ");
             const code = Number(msgWords[msgWords.length-1]);
 

@@ -14,6 +14,7 @@ function App() {
    let isLoggedIn = loggedIn;
    const UserProps = {
       setUserId,
+      userName,
       setUserName,
       setLoggedIn,
       setRecipes
