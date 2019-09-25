@@ -23,7 +23,7 @@ function App(props) {
       const userToken = localStorage.getItem("token");
       console.log(`userToken: ${userToken}`);
       
-      if (!userToken) {
+      if (userToken) {
          setLoggedIn(true);
       } else {
          console.log(props);
@@ -39,6 +39,15 @@ function App(props) {
             <h1>My Secret Family Recipes</h1>
             <img src="https://via.placeholder.com/1024x200" />
          </header>
+
+         <div className="filter-bar">
+            <button>All</button>
+            <button>Breakfast</button>
+            <button>Lunch</button>
+            <button>Dinner</button>
+            <button>Desert</button>
+            <button>Snacks</button>
+         </div>
 
          <Route exact path="/" render={ 
             props => {
