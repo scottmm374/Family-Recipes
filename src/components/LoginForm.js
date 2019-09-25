@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import styled from "styled-components";
 import {Header, Icon, Button} from "semantic-ui-react";
 import { withFormik, Form, Field, ErrorMessage } from "formik";
@@ -58,25 +58,26 @@ const UserInput = styled(Field)`
 const UILabel = styled.label`
    color: ${colors.textDark};
 `;
-// const ButtonContainer = styled.div`
-//    width: 100%;
+const ErrorBadge = styled.p`
+   margin: 0;
+   position: absolute;
+   color: #721c24;
+   background-color: #f8d7da;
+   border-color: #f5c6cb;
+   border-radius: 4px;
+   padding: 5px 10px;
+`;
 
-//    display: flex;
-//    justify-content: flex-end;
-// `;
-
-function LoginForm () {
+function LoginForm ({errors, touched}) {
    return (
       <FormOverlay>
          <MainForm>
             <Header as="h1" icon textAlign="center">
                <Icon name="sign-in" circular/>
                <Header.Content>Login</Header.Content>
-               {/* <Icon name="signup" circular/>
-               <Header.Content>Login</Header.Content> */}
             </Header>
-            {/* <label>Username</label> */}
             <UIContainer>
+               <ErrorMessage name="username" component={ErrorBadge} />
                <UILabel>Username
                   <UserInput 
                      name="username" 
@@ -84,24 +85,14 @@ function LoginForm () {
                      placeholder="Enter Your User Name"
                   />
                </UILabel>
+               <ErrorMessage name="password" component={ErrorBadge} />
                <UILabel>Password
                   <UserInput 
-                     name="password1"
+                     name="password"
                      type="password" 
                      placeholder="Type your password"
                   />
                </UILabel>
-               {
-                  (false)
-                  ?  <UILabel>Password 2
-                        <UserInput 
-                           name="password2"
-                           type="password" 
-                           placeholder="Retype your password"
-                        />
-                     </UILabel>
-                  :  null
-               }
             </UIContainer>
             <Button fluid animated="fade" color="blue" type="submit">
                <Button.Content visible>Login</Button.Content>
@@ -117,15 +108,23 @@ function LoginForm () {
 export default withFormik({
    mapPropsToValues: values => {
       return {
+         history: values.history,
          ...values.userProps,
          username: values.username || "",
-         password1: values.attempt1 || "",
-         password2: values.attempt2 || ""
+         password: values.password || ""
       };
    },
+   validationSchema: yup.object().shape({
+      username: yup.string()
+         .required("Please enter a username.")
+         .min(3, "Your username must be at least 3 characters")
+         .matches(/^[\w]+$/, "Your username may only contain letters, numbers, and underscore. "),
+      password: yup.string()
+         .required("Please enter a password.")
+         .min(8, "Your password must be at least 8 characters")
+         .matches(/^[\S]+$/, "Your password may not contain whitespace")
+   }),
    handleSubmit: values => {
-      // console.log(`Register with: \n"${JSON.stringify(values, null, 3)}`);
-      // console.log(values);
       /* Login
          {
             user_id: "",
@@ -141,37 +140,50 @@ export default withFormik({
             token: ""
          }
       */
+
+      console.log(`Send this to auth/login: {
+   username: "${values.username}",
+   password: "${values.password}"
+}`);
+
       axios
          .post("https://family-cookbook-api.herokuapp.com/auth/login", {
-            // username: "UserTest7",
-            // password: "Password"
+            // username: "admin",
+            // password: "password"
             username: values.username,
             password: values.password
          })
          .then(response => {
-            if (response.status >= 200 && response.status < 300) {
-               values.setLoggedIn(true);
-               values.setUserId(response.data.user_id);
-               values.setUserName(response.data.username);
-               localStorage.setItem("token", response.data.token);
+            values.setLoggedIn(true);
+            values.setUserId(response.data.user_id);
+            values.setUserName(response.data.username);
+            // localStorage.setItem("token", response.data.token);
 
-               return new Promise((resolve, reject) => {
-                  resolve(response);
-               });
-            } else {
-               console.error(`
-                 Status: ${response.status}
-                 Message: ${response.message}
-               `);
-            }
+            return axios.get("https://family-cookbook-api.herokuapp.com/recipes", {
+               user_id: response.data.user_id,
+               token: response.data.token
+            });
          })
          .then(response => {
-            // axios
-            //    .get("recipes")
             console.log("Get Them Recipes!");
+            console.log(response.data);
+            values.setRecipes(response.data);
+            values.history.push("/");
          })
          .catch(error => {
-            console.error(error);
+            const msgWords = error.message.split(" ");
+            const code = Number(msgWords[msgWords.length-1]);
+
+            switch (code) {
+               case 401:
+                  console.error("There was a problem with your Username/Password!");
+                  break;
+               case 500:
+                  console.error("There was a problem with the server!");
+                  break;
+               default:
+                  console.error(error);
+            }
          });
    }
 })(LoginForm);
