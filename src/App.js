@@ -1,15 +1,17 @@
 import React, {useState, useEffect} from 'react';
+import {Route} from "react-router-dom";
 import './App.css';
+
 import LoginForm from './components/LoginForm.js';
 import RecipeForm from './components/RecipeForm.js';
 import RecipiesList from './components/RecipiesList.js';
 
-function App() {
+function App(props) {
    const [userName, setUserName] = useState();
    const [userId, setUserId] = useState();
    const [recipes, setRecipes] = useState();
    const [loggedIn, setLoggedIn] = useState(false);
-   const LoginProps = {
+   const UserProps = {
       setUserId,
       setUserName,
       setLoggedIn,
@@ -21,7 +23,11 @@ function App() {
       const userToken = localStorage.getItem("token");
       console.log(`userToken: ${userToken}`);
       
-      setLoggedIn(userToken || false);
+      if (!userToken) {
+         setLoggedIn(true);
+      } else {
+         console.log(props);
+      };
    }, []);
    useEffect(() => {
       console.log(`loggedIn: ${loggedIn}`);
@@ -29,35 +35,24 @@ function App() {
 
    return (
       <div className="App">
-         <nav>
-            <a href="#">Home</a>
-            <a href="#">About Us</a>
-            <a href="#">Contact</a>
-         </nav>
-         <img src="https://via.placeholder.com/1024x200" />
-         <h1>Welcome to the App</h1>
-         <p>
-            Helping marketers serve unmatched cross-phase personalized 
-            experiences at every step of the FirstSpriti Digital Experience 
-            Platform powers enterprise-class. These innovations help CMOs 
-            challenged with the delivery of omnichannel digital experiences for 
-            some of the FirstSpriti Digital Experience Platform powers 
-            enterprise-class.
-         </p>
-         <p>
-            Clicking on this link which refers to B2B Marketing awards 
-            shortlist will take you to the awards page of the FirstSpriti 
-            Digital Experience Platform powers enterprise-class. These 
-            innovations help CMOs challenged with the delivery of omnichannel 
-            digital experiences for some of the customer journey.
-         </p>
-         <p>
-            Steps taken and calories burnt and send data to a pro version for 
-            £7 a month with 15 personalised hub topic and 10 scoops a day. 
-            Clicking on this link which refers to B2B Marketing awards 
-            shortlist will take you to the awards page of the customer journey.
-         </p>
-         {!loggedIn && <LoginForm  stateProps={LoginProps} />}
+         <header>
+            <h1>My Secret Family Recipes</h1>
+            <img src="https://via.placeholder.com/1024x200" />
+         </header>
+
+         <Route exact path="/" render={ 
+            props => {
+               if (!recipes || recipes.length === 0) {
+                  return <h2>Wow!! Such Empty...</h2>;
+               } else {
+                  return <RecipiesList {...props} />
+               }
+            }
+         } />
+         <Route path="/login" render={props => <LoginForm {...props} userProps={UserProps} />} />
+         {/* <Route exact path="/register" component={} />
+         <Route exact path="/add-recipe" component={} />
+         <Route path="/recipe/:id" component={} /> */}
       </div>
    );
 }

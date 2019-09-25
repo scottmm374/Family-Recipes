@@ -117,7 +117,7 @@ function LoginForm () {
 export default withFormik({
    mapPropsToValues: values => {
       return {
-         ...values.stateProps,
+         ...values.userProps,
          username: values.username || "",
          password1: values.attempt1 || "",
          password2: values.attempt2 || ""
@@ -143,11 +143,13 @@ export default withFormik({
       */
       axios
          .post("https://family-cookbook-api.herokuapp.com/auth/login", {
-            username: "UserTest7",
-            password: "Password"
+            // username: "UserTest7",
+            // password: "Password"
+            username: values.username,
+            password: values.password
          })
          .then(response => {
-            if (response.status >= 200 && response.status <= 300) {
+            if (response.status >= 200 && response.status < 300) {
                values.setLoggedIn(true);
                values.setUserId(response.data.user_id);
                values.setUserName(response.data.username);
@@ -166,7 +168,7 @@ export default withFormik({
          .then(response => {
             // axios
             //    .get("recipes")
-            console.log("Get Them REcipes!");
+            console.log("Get Them Recipes!");
          })
          .catch(error => {
             console.error(error);
