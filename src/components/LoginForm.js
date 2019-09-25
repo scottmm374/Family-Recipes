@@ -117,6 +117,7 @@ function LoginForm () {
 export default withFormik({
    mapPropsToValues: values => {
       return {
+         history: values.history,
          ...values.userProps,
          username: values.username || "",
          password1: values.attempt1 || "",
@@ -141,23 +142,35 @@ export default withFormik({
             token: ""
          }
       */
+
+      console.log({
+         username: values.username,
+         password: values.password1
+      });
+
       axios
          .post("https://family-cookbook-api.herokuapp.com/auth/login", {
-            // username: "UserTest7",
-            // password: "Password"
+            // username: "admin",
+            // password: "password"
             username: values.username,
-            password: values.password
+            password: values.password1
          })
          .then(response => {
             if (response.status >= 200 && response.status < 300) {
                values.setLoggedIn(true);
                values.setUserId(response.data.user_id);
                values.setUserName(response.data.username);
-               localStorage.setItem("token", response.data.token);
+               // localStorage.setItem("token", response.data.token);
 
-               return new Promise((resolve, reject) => {
-                  resolve(response);
+               return axios.get("https://family-cookbook-api.herokuapp.com/recipes", {
+                  user_id: response.data.user_id,
+                  token: response.data.token
                });
+               // return new Promise((resolve, reject) => {
+               //    resolve({
+               //       data: [{},]
+               //    });
+               // });
             } else {
                console.error(`
                  Status: ${response.status}
@@ -166,12 +179,40 @@ export default withFormik({
             }
          })
          .then(response => {
-            // axios
-            //    .get("recipes")
             console.log("Get Them Recipes!");
+            if (response.status >= 200 && response.status < 300) {
+               console.log(response.data);
+               values.setRecipes(response.data);
+               values.history.push("/");
+            } else {
+               console.error(`
+                 Status: ${response.status}
+                 Message: ${response.message}
+               `);
+            }
          })
          .catch(error => {
             console.error(error);
          });
+
+      //Pretend Axios call worked
+      // {
+      //    console.log(`Testing Login functionality...`);
+      //    const response = {
+      //       data: {
+      //          user_id: "943",
+      //          username: "HelloYou",
+      //          token: "This is a Test Token"
+      //       }
+      //    };
+
+      //    values.setLoggedIn(true);
+      //    values.setUserId(response.data.user_id);
+      //    values.setUserName(response.data.username);
+      //    // localStorage.setItem("token", response.data.token);
+      //    values.history.push("/");
+         
+      //    console.log(`Should be logged in now.`);
+      // }
    }
 })(LoginForm);

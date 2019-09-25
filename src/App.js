@@ -1,16 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import {Route} from "react-router-dom";
+import {Route, Redirect} from "react-router-dom";
 import './App.css';
 
 import LoginForm from './components/LoginForm.js';
 import RecipeForm from './components/RecipeForm.js';
 import RecipiesList from './components/RecipiesList.js';
 
-function App(props) {
-   const [userName, setUserName] = useState();
-   const [userId, setUserId] = useState();
-   const [recipes, setRecipes] = useState();
+function App() {
+   const [userName, setUserName] = useState("what?");
+   const [userId, setUserId] = useState("another thing");
+   const [recipes, setRecipes] = useState([]);
    const [loggedIn, setLoggedIn] = useState(false);
+   let isLoggedIn = loggedIn;
    const UserProps = {
       setUserId,
       setUserName,
@@ -22,16 +23,39 @@ function App(props) {
       //check to see if user is already logged in
       const userToken = localStorage.getItem("token");
       console.log(`userToken: ${userToken}`);
-      
-      if (userToken) {
-         setLoggedIn(true);
-      } else {
-         console.log(props);
-      };
+
+      isLoggedIn = (userToken !== null);
+      console.log(`isLoggedIn: ${isLoggedIn}`); 
+      setLoggedIn(isLoggedIn);
    }, []);
+   
    useEffect(() => {
-      console.log(`loggedIn: ${loggedIn}`);
-   }, []);
+      console.log(`{
+   userName: ${userName},
+   userId: ${userId},
+   recipes: ${recipes},
+   loggedIn: ${loggedIn}
+}`
+      );
+   }, [loggedIn]);
+
+   useEffect(() => {
+      console.log(`{
+   userName: ${userName},
+   userId: ${userId},
+   recipes: ${recipes},
+   loggedIn: ${loggedIn}
+}`
+      );
+   }, [recipes]);
+
+   const renderLoginForm = () => {
+      if (isLoggedIn) {
+         return <Redirect to="/login" />;
+      }
+
+      return null;
+   };
 
    return (
       <div className="App">
@@ -39,7 +63,6 @@ function App(props) {
             <h1>My Secret Family Recipes</h1>
             <img src="https://via.placeholder.com/1024x200" />
          </header>
-
          <div className="filter-bar">
             <button>All</button>
             <button>Breakfast</button>
@@ -49,19 +72,36 @@ function App(props) {
             <button>Snacks</button>
          </div>
 
+         {/* <button onClick={() => {
+            console.log(`
+{
+   userName: ${userName},
+   userId: ${userId},
+   recipes: ${recipes},
+   loggedIn: ${loggedIn}
+}            
+            `);
+         }} >State Variables</button> */}
+         {!isLoggedIn && <Redirect to="/login" />}
+
+
          <Route exact path="/" render={ 
             props => {
                if (!recipes || recipes.length === 0) {
                   return <h2>Wow!! Such Empty...</h2>;
                } else {
-                  return <RecipiesList {...props} />
+                  return (
+                     <ul>
+                        {recipes.map(recipe => <li key={recipe.id}>{recipe.title}</li>)}
+                     </ul>
+                  );
                }
             }
          } />
          <Route path="/login" render={props => <LoginForm {...props} userProps={UserProps} />} />
-         {/* <Route exact path="/register" component={} />
-         <Route exact path="/add-recipe" component={} />
-         <Route path="/recipe/:id" component={} /> */}
+         {/* <Route exact path="/register" component={} /> */}
+         {/* <Route exact path="/add-recipe" component={} /> */}
+         {/* <Route path="/recipe/:id" component={} /> */}
       </div>
    );
 }
