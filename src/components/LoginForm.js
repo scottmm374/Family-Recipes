@@ -72,10 +72,7 @@ function LoginForm () {
             <Header as="h1" icon textAlign="center">
                <Icon name="sign-in" circular/>
                <Header.Content>Login</Header.Content>
-               {/* <Icon name="signup" circular/>
-               <Header.Content>Login</Header.Content> */}
             </Header>
-            {/* <label>Username</label> */}
             <UIContainer>
                <UILabel>Username
                   <UserInput 
@@ -125,8 +122,6 @@ export default withFormik({
       };
    },
    handleSubmit: values => {
-      // console.log(`Register with: \n"${JSON.stringify(values, null, 3)}`);
-      // console.log(values);
       /* Login
          {
             user_id: "",
@@ -143,10 +138,10 @@ export default withFormik({
          }
       */
 
-      console.log({
-         username: values.username,
-         password: values.password1
-      });
+      console.log(`Send this to auth/login: {
+   username: "${values.username}",
+   password: "${values.password1}"
+}`);
 
       axios
          .post("https://family-cookbook-api.herokuapp.com/auth/login", {
@@ -156,63 +151,37 @@ export default withFormik({
             password: values.password1
          })
          .then(response => {
-            if (response.status >= 200 && response.status < 300) {
-               values.setLoggedIn(true);
-               values.setUserId(response.data.user_id);
-               values.setUserName(response.data.username);
-               // localStorage.setItem("token", response.data.token);
+            values.setLoggedIn(true);
+            values.setUserId(response.data.user_id);
+            values.setUserName(response.data.username);
+            // localStorage.setItem("token", response.data.token);
 
-               return axios.get("https://family-cookbook-api.herokuapp.com/recipes", {
-                  user_id: response.data.user_id,
-                  token: response.data.token
-               });
-               // return new Promise((resolve, reject) => {
-               //    resolve({
-               //       data: [{},]
-               //    });
-               // });
-            } else {
-               console.error(`
-                 Status: ${response.status}
-                 Message: ${response.message}
-               `);
-            }
+            return axios.get("https://family-cookbook-api.herokuapp.com/recipes", {
+               user_id: response.data.user_id,
+               token: response.data.token
+            });
          })
          .then(response => {
             console.log("Get Them Recipes!");
-            if (response.status >= 200 && response.status < 300) {
-               console.log(response.data);
-               values.setRecipes(response.data);
-               values.history.push("/");
-            } else {
-               console.error(`
-                 Status: ${response.status}
-                 Message: ${response.message}
-               `);
-            }
+            console.log(response.data);
+            values.setRecipes(response.data);
+            values.history.push("/");
          })
          .catch(error => {
-            console.error(error);
+            // console.error(JSON.stringify(error, null, 3));
+            const msgWords = error.message.split(" ");
+            const code = Number(msgWords[msgWords.length-1]);
+
+            switch (code) {
+               case 401:
+                  console.error("There was a problem with your Username/Password!");
+                  break;
+               case 500:
+                  console.error("There was a problem with the server!");
+                  break;
+               default:
+                  console.error(error);
+            }
          });
-
-      //Pretend Axios call worked
-      // {
-      //    console.log(`Testing Login functionality...`);
-      //    const response = {
-      //       data: {
-      //          user_id: "943",
-      //          username: "HelloYou",
-      //          token: "This is a Test Token"
-      //       }
-      //    };
-
-      //    values.setLoggedIn(true);
-      //    values.setUserId(response.data.user_id);
-      //    values.setUserName(response.data.username);
-      //    // localStorage.setItem("token", response.data.token);
-      //    values.history.push("/");
-         
-      //    console.log(`Should be logged in now.`);
-      // }
    }
 })(LoginForm);

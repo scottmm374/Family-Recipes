@@ -22,40 +22,32 @@ function App() {
    useEffect(() => {
       //check to see if user is already logged in
       const userToken = localStorage.getItem("token");
-      console.log(`userToken: ${userToken}`);
+      // console.log(`userToken: ${userToken}`);
 
       isLoggedIn = (userToken !== null);
-      console.log(`isLoggedIn: ${isLoggedIn}`); 
+      // console.log(`isLoggedIn: ${isLoggedIn}`); 
       setLoggedIn(isLoggedIn);
    }, []);
    
-   useEffect(() => {
-      console.log(`{
-   userName: ${userName},
-   userId: ${userId},
-   recipes: ${recipes},
-   loggedIn: ${loggedIn}
-}`
-      );
-   }, [loggedIn]);
+//    useEffect(() => {
+//       console.log(`{
+//    userName: ${userName},
+//    userId: ${userId},
+//    recipes: ${recipes},
+//    loggedIn: ${loggedIn}
+// }`
+//       );
+//    }, [loggedIn]);
 
-   useEffect(() => {
-      console.log(`{
-   userName: ${userName},
-   userId: ${userId},
-   recipes: ${recipes},
-   loggedIn: ${loggedIn}
-}`
-      );
-   }, [recipes]);
-
-   const renderLoginForm = () => {
-      if (isLoggedIn) {
-         return <Redirect to="/login" />;
-      }
-
-      return null;
-   };
+//    useEffect(() => {
+//       console.log(`{
+//    userName: ${userName},
+//    userId: ${userId},
+//    recipes: ${recipes},
+//    loggedIn: ${loggedIn}
+// }`
+//       );
+//    }, [recipes]);
 
    return (
       <div className="App">
