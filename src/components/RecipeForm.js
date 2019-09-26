@@ -70,17 +70,19 @@ const Error = styled.p`
     font-size: 1.0rem;
     color: red;
 `;
- 
+
 
 // Main form
 
 const RecipeForm = ({ errors, touched, status }) => {
     const [recipes, setRecipes] = useState([])
+       
 
     useEffect(() => {
         if (status) {
             setRecipes([...recipes, status])
         }
+
     }, [status])
 
 
@@ -113,8 +115,8 @@ const RecipeForm = ({ errors, touched, status }) => {
                     </div>
 
                     <div>
-                        {touched.catagories && errors.catagories && <Error>{errors.catagories}</Error>}
-                        <UserInput component="select" name="catagories" placeholder="Catagories">
+                        {touched.category && errors.category && <Error>{errors.category}</Error>}
+                        <UserInput component="select" name="category" placeholder="category">
                             <option value="select">Select one</option>
                             <option value="dinner">Dinner</option>
                             <option value="lunch">Lunch</option>
@@ -125,7 +127,7 @@ const RecipeForm = ({ errors, touched, status }) => {
 
                     <Button fluid animated="fade" color="blue" type="submit">
                         <Button.Content visible>Add Recipe</Button.Content>
-                        <Button.Content hidden> 
+                        <Button.Content hidden>
                         </Button.Content>
                     </Button>
                 </UIContainer>
@@ -138,13 +140,13 @@ const RecipeForm = ({ errors, touched, status }) => {
 
 const FormikForm = withFormik({
 
-    mapPropsToValues({ title, author, ingredients, instructions, catagories }) {
+    mapPropsToValues({ title, author, ingredients, instructions, category }) {
         return {
             title: title || "",
             author: author || "",
             ingredients: ingredients || "",
             instructions: instructions || "",
-            catagories: catagories || "",
+            category: category || "",
 
         };
     },
@@ -155,40 +157,31 @@ const FormikForm = withFormik({
         author: yup.string().required("Add recipe authors name"),
         ingredients: yup.string().required("List all ingredients"),
         instructions: yup.string().required("Don't forget the instructions!"),
-        
-    }),
 
+    }),
 
     handleSubmit(values, { resetForm, setSubmitting, setStatus }) {
 
-        let newRecipe = values;
-        newRecipe.ingredients = newRecipe.ingredients.split(",")
-        // console.log(`Recipe: \n"${JSON.stringify(values, null, 3)}`)
-axios
-    .post("https://reqres.in/api/recipes", newRecipe)
-    .then(res => {
-        // console.log(res, "res");
-        setStatus(res.data);
-        resetForm();
-        setSubmitting(false)
-        return new Promise((resolve) => {
-            resolve(res)
-        });
-    })
-    .then(res => {
-        console.log(`post complete: \n"${JSON.stringify(res, null, 3)}`)
-        // axios
-        // .get(`https://reqres.in/api/recipes/${res.data.id}`)
-        // .then(res => {
-        //     console.log("responce", res);
-        // })
+        // let newRecipe = values;
+        // newRecipe.ingredients = newRecipe.ingredients.split(",")
+        console.log(`Recipe: \n"${JSON.stringify(values, null, 3)}`)
 
-    })
-    .catch(err => {
-        console.log(err);
-        setSubmitting(false);
-    })
+        axios
+            .post("https://family-cookbook-api.herokuapp.com/recipes", values)
+            .then(res => {
+                console.log(res, "res");
+                setStatus(res.data);
+                resetForm();
+                setSubmitting(false)
+
+            })
+
+            .catch(err => {
+                console.log(err);
+                setSubmitting(false);
+            })
     }
-}) (RecipeForm)
+
+})(RecipeForm)
 
 export default FormikForm;
