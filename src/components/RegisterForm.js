@@ -76,13 +76,13 @@ const HorizontalLine = styled.hr`
    width: 100%;
 `;
 
-function LoginForm ({errors, touched}) {
+function RegisterForm ({errors, touched}) {
    return (
       <FormOverlay>
          <MainForm>
             <Header as="h1" icon textAlign="center">
                <Icon name="sign-in" circular/>
-               <Header.Content>Login</Header.Content>
+               <Header.Content>Create Account</Header.Content>
             </Header>
             <UIContainer>
                <ErrorMessage name="username" component={ErrorBadge} />
@@ -90,7 +90,7 @@ function LoginForm ({errors, touched}) {
                   <UserInput 
                      name="username" 
                      type="text" 
-                     placeholder="Enter Your User Name"
+                     placeholder="Enter a User Name"
                   />
                </UILabel>
                <ErrorMessage name="password" component={ErrorBadge} />
@@ -98,18 +98,24 @@ function LoginForm ({errors, touched}) {
                   <UserInput 
                      name="password"
                      type="password" 
-                     placeholder="Type your password"
+                     placeholder="Type a password"
+                  />
+               </UILabel>
+               <ErrorMessage name="passwordConfirm" component={ErrorBadge} />
+               <UILabel>Confirm Password
+                  <UserInput 
+                     name="passwordConfirm"
+                     type="password" 
+                     placeholder="Retype the password"
                   />
                </UILabel>
             </UIContainer>
             <Button fluid animated="fade" color="blue" type="submit">
-               <Button.Content visible>Login</Button.Content>
+               <Button.Content visible>Register</Button.Content>
                <Button.Content hidden>
                   <Icon name="sign-in"/>
                </Button.Content>
             </Button>
-            <HorizontalLine />
-            <Link to="/register">Create an Accout</Link>
          </MainForm>
       </FormOverlay>
    );
@@ -121,29 +127,31 @@ export default withFormik({
          history: values.history,
          userLogin: values.userLogin,
          username: values.username || "",
-         password: values.password || ""
+         password: values.password || "",
+         passwordConfirm: values.passwordConfirm || ""
       };
    },
    validationSchema: yup.object().shape({
       username: yup.string()
-         .required("Please enter a username.")
+         .matches(/^[\w]+$/, "Your username may only contain letters, numbers, and underscore. ")
          .min(3, "Your username must be at least 3 characters")
-         .matches(/^[\w]+$/, "Your username may only contain letters, numbers, and underscore. "),
+         .required("Please enter a username."),
       password: yup.string()
-         .required("Please enter a password.")
-         .min(8, "Your password must be at least 8 characters")
          .matches(/^[\S]+$/, "Your password may not contain whitespace")
+         .min(8, "Your password must be at least 8 characters")
+         .required("Please enter a password."),
+      passwordConfirm: yup.string()
+         .oneOf([yup.ref("password"), null], "Passwords don't match")
+         .required('Password confirm is required')
    }),
    handleSubmit: values => {
-      console.log(`Send this to auth/login: {
+      console.log(`Send this to auth/register: {
          username: "${values.username}",
          password: "${values.password}"
       }`);
 
       axios
-         .post("https://family-cookbook-api.herokuapp.com/auth/login", {
-            // username: "admin",
-            // password: "password"
+         .post("https://family-cookbook-api.herokuapp.com/auth/register", {
             username: values.username,
             password: values.password
          })
@@ -167,4 +175,4 @@ export default withFormik({
             }
          });
    }
-})(LoginForm);
+})(RegisterForm);
