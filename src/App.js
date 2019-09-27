@@ -32,6 +32,11 @@ function App() {
       setUserName(username);
       setLoggedIn(true);
    };
+
+   const addRecipe = recipe => {
+    setRecipes([...recipes, recipe])
+   }
+
    //Logs the user out of the application
    const userLogout = event => {
       event.preventDefault();
@@ -132,7 +137,9 @@ function App() {
          <Route exact path="/register" render={
             props => <RegisterForm {...props} userLogin={userLogin} />
          } />
-         <Route exact path="/add-recipe" component={RecipeForm} />
+         <Route exact path="/add-recipe" render={
+           props => <RecipeForm {...props} addRecipe={addRecipe} />
+         } />
          {/* <Route path="/recipe/:id" component={} /> */}
       </div>
    );

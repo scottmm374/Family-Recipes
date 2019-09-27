@@ -140,14 +140,15 @@ const RecipeForm = ({ errors, touched, status }) => {
 
 const FormikForm = withFormik({
 
-    mapPropsToValues({ title, author, ingredients, instructions, category, history }) {
+    mapPropsToValues({ title, author, ingredients, instructions, category, history, addRecipe }) {
         return {
             title: title || "",
             author: author || "",
             ingredients: ingredients || "",
             instructions: instructions || "",
             category: category || "",
-            history
+            history,
+            addRecipe
         };
     },
 
@@ -178,12 +179,14 @@ const FormikForm = withFormik({
                 category: values.category
              })
             .then(res => {
-                console.log(res, "res");
-                setStatus(res.data);
-                resetForm();
-                setSubmitting(false);
-                values.history.push('/')
+                console.log("server Response: ", res.data);
+                values.addRecipe(res.data)
+                // setStatus(res.data);
+                // resetForm();
+                // setSubmitting(false);
 
+                values.history.push('/');
+            
             })
 
             .catch(err => {
