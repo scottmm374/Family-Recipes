@@ -117,7 +117,7 @@ const RecipeForm = ({ errors, touched, status }) => {
                     <div>
                         {touched.category && errors.category && <Error>{errors.category}</Error>}
                         <UserInput component="select" name="category" placeholder="category">
-                            <option value="" selected disabled>Select one</option>
+                            <option value="" defaultValue disabled>Select one</option>
                             <option value="Dinner">Dinner</option>
                             <option value="Lunch">Lunch</option>
                             <option value="Breakfast">Breakfast</option>

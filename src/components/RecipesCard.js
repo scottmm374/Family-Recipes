@@ -21,7 +21,7 @@ const Card = styled.div`
    width: 30%;
 `;
 
-function RecipesCard({ title, author, instructions, ingredients, category,  id }) {
+function RecipesCard({ title, author, instructions, ingredients, category,  id, deleteRecipe, setDisplayRecipes }) {
    const renderIngredients = () => {
       const items = ingredients.split(",");
       return (
@@ -42,7 +42,7 @@ function RecipesCard({ title, author, instructions, ingredients, category,  id }
 
          <p>{instructions}</p>
 
-         <DeleteRecipe id={id}/>
+         <DeleteRecipe id={id} deleteRecipe={deleteRecipe} setDisplayRecipes={setDisplayRecipes}/>
       </Card>
    )
 }

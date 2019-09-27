@@ -9,7 +9,12 @@ function DeleteRecipe(props) {
     const handleDelete = () => {
         axios
             .delete(`https://family-cookbook-api.herokuapp.com/recipes/${props.id}`)
-            .then(res => console.log(res))
+            .then(res => {
+                console.log('deleting Recipe: ', JSON.stringify(res.data.removed, null, 3))
+  
+
+                props.deleteRecipe(props.id, props.setDisplayRecipes)
+            })
             .catch(err => console.log(err))
     }
            

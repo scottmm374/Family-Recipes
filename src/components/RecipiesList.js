@@ -9,11 +9,12 @@ const CardsContainer = styled.div`
    justify-content: space-between;
 `;
 
-function RecipiesList({recipes}) {
+function RecipiesList({recipes, deleteRecipe}) {
    const [displayRecipes, setDisplayRecipes] = useState(recipes || []);
    console.log(JSON.stringify(recipes, null, 3));
 
-    const filterRecipes = value => {
+
+   const filterRecipes = value => {
         const allRecipes = recipes;
         const results = allRecipes.filter(recipe => {
             return (recipe.category === value);
@@ -37,7 +38,7 @@ function RecipiesList({recipes}) {
          <CardsContainer>
             {displayRecipes.map(recipe => (
                // <p key={recipe.id}>{recipe.title}</p>
-               <RecipesCard key={recipe.id} {...recipe} />
+               <RecipesCard key={recipe.id} {...recipe} setDisplayRecipes={setDisplayRecipes} deleteRecipe={deleteRecipe}/>
             ))}
          </CardsContainer>
       </>

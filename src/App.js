@@ -33,8 +33,20 @@ function App() {
       setLoggedIn(true);
    };
 
+  //  adds recipe to state
    const addRecipe = recipe => {
     setRecipes([...recipes, recipe])
+   }
+
+   const deleteRecipe = (recipeId, updateDisplayList) => {
+     const recipeList = recipes;
+
+     const newList = recipeList.filter((recipe) =>{
+        return (recipe.id !== recipeId);
+     })
+
+     setRecipes(newList)
+     updateDisplayList(newList)
    }
 
    //Logs the user out of the application
@@ -126,7 +138,7 @@ function App() {
                   return <h2>Wow!! Such Empty...</h2>;
                } else {
                   return (
-                     <RecipiesList recipes={recipes} />
+                     <RecipiesList recipes={recipes} deleteRecipe={deleteRecipe} />
                   );
                }
             }
