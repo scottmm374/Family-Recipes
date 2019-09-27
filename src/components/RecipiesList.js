@@ -33,7 +33,7 @@ function RecipiesList({recipes, deleteRecipe}) {
             <button onClick={() => {filterRecipes('Lunch')}}>Lunch</button>
             <button onClick={() => {filterRecipes('Dinner')}}>Dinner</button>
             <button onClick={() => {filterRecipes('Dessert')}}>Dessert</button>
-            <button onClick={() => {filterRecipes('Snack')}}>Snacks</button>
+            <button onClick={() => {filterRecipes('Snacks')}}>Snacks</button>
          </div>
          <CardsContainer>
             {displayRecipes.map(recipe => (

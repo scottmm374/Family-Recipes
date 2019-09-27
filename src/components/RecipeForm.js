@@ -122,6 +122,7 @@ const RecipeForm = ({ errors, touched, status }) => {
                             <option value="Lunch">Lunch</option>
                             <option value="Breakfast">Breakfast</option>
                             <option value="Dessert">Dessert</option>
+                            <option value="Snacks">Snacks</option>
                         </UserInput >
                     </div>
 

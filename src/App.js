@@ -109,7 +109,7 @@ function App() {
                   :  <Link to="/login">Sign In</Link>
                }
             </div>
-            <img src="https://via.placeholder.com/1024x200" />
+        <img src='./img/app-header.jpg' height='347' width='1024' />
          </header>
          {/* <div className="filter-bar">
             <button>All</button>
