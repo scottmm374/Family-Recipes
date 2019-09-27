@@ -46,7 +46,7 @@ function App() {
 
    //First page render
    useEffect(() => {
-      console.log("First page render");
+      // console.log("First page render");
 
       //check to see if user is already logged in
       const userData = localStorage.getItem("user-data");
@@ -59,8 +59,8 @@ function App() {
    //Whenever loggedIn changed
    useEffect(() => {
       const userData = JSON.parse(localStorage.getItem("user-data"));
-      console.log("First render -=or=- loggedIn changed");
-      console.log(userData);
+      // console.log("First render -=or=- loggedIn changed");
+      // console.log(userData);
 
       if (loggedIn) {
          console.log("Grabbing Recipes!");
@@ -72,7 +72,7 @@ function App() {
                token: userData.token
             })
             .then(response => {
-               console.log(JSON.stringify(response.data, null, 3));
+               // console.log(JSON.stringify(response.data, null, 3));
                setRecipes(response.data);
             })
             .catch(error => {
@@ -94,14 +94,14 @@ function App() {
             </div>
             <img src="https://via.placeholder.com/1024x200" />
          </header>
-         <div className="filter-bar">
+         {/* <div className="filter-bar">
             <button>All</button>
             <button>Breakfast</button>
             <button>Lunch</button>
             <button>Dinner</button>
             <button>Desert</button>
             <button>Snacks</button>
-         </div>
+         </div> */}
 
          {/* <button onClick={() => {
             console.log(`
@@ -121,9 +121,7 @@ function App() {
                   return <h2>Wow!! Such Empty...</h2>;
                } else {
                   return (
-                     <ul>
-                        {recipes.map(recipe => <li key={recipe.id}>{recipe.title}</li>)}
-                     </ul>
+                     <RecipiesList recipes={recipes} />
                   );
                }
             }
@@ -134,7 +132,7 @@ function App() {
          <Route exact path="/register" render={
             props => <RegisterForm {...props} userLogin={userLogin} />
          } />
-         {/* <Route exact path="/add-recipe" component={} /> */}
+         <Route exact path="/add-recipe" component={RecipeForm} />
          {/* <Route path="/recipe/:id" component={} /> */}
       </div>
    );

@@ -1,19 +1,50 @@
-import React from 'react'
+import React from 'react';
+import styled from "styled-components";
+import DeleteRecipe from './DeleteRecipe';
 
-function RecipesCard(props) {
-    return (
-        <div className='card'>
-            <h3>{props.card.title.toUpperCase()}</h3>
-            <h4>{props.card.catagories}</h4>
-            <p>{props.card.author}</p>
-            {/* {props.card.ingredients.map(ingredient =>
-                <ul>
-                    <li>{ingredient}</li>
-                </ul>    
-            )} */}
-            
-        </div>
-    )
+const colors = {
+   attention: "#ed7769",
+   accent: "#4b719c",
+   subtle: "#97a1a5",
+   textLight: "#efedec",
+   textDark: "#594236"
+};
+
+const Card = styled.div`
+   background-color: ${colors.accent};
+   border: 0;
+   box-shadow: 0 4px 8px 3px ${colors.subtle};
+   color: ${colors.textLight};
+   cursor: pointer;
+   padding: 1rem;
+   margin: 1rem auto;
+   width: 30%;
+`;
+
+function RecipesCard({ title, author, instructions, ingredients, category,  id }) {
+   const renderIngredients = () => {
+      const items = ingredients.split(",");
+      return (
+         items.map((item, idx) => <p key={idx}>{item.trim()}</p>)
+      );
+   };
+
+   return (
+      <Card>
+         <h1>{title.toUpperCase()}</h1>
+         <h2>{category}</h2>
+         <h3>{author}</h3>
+         {
+            (ingredients && ingredients.length > 0)
+               ? renderIngredients()
+               : null
+         }
+
+         <p>{instructions}</p>
+
+         <DeleteRecipe id={id}/>
+      </Card>
+   )
 }
 
 export default RecipesCard
