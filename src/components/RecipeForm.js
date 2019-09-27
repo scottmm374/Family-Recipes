@@ -107,7 +107,7 @@ const RecipeForm = ({ errors, touched, status }) => {
                     </div>
                     <div>
                         {touched.ingredients && errors.ingredients && <Error>{errors.ingredients}</Error>}
-                        <UserInput component="textarea" name="ingredients" placeholder="List all Ingredients seperated by a comma" />
+                        <UserInput component="textarea" name="ingredients" placeholder="List all Ingredients separated by a comma" />
                     </div>
                     <div>
                         {touched.instructions && errors.instructions && <Error>{errors.instructions}</Error>}
@@ -117,11 +117,11 @@ const RecipeForm = ({ errors, touched, status }) => {
                     <div>
                         {touched.category && errors.category && <Error>{errors.category}</Error>}
                         <UserInput component="select" name="category" placeholder="category">
-                            <option value="select">Select one</option>
-                            <option value="dinner">Dinner</option>
-                            <option value="lunch">Lunch</option>
-                            <option value="breakfast">Breakfast</option>
-                            <option value="desert">Desert</option>
+                            <option value="" selected disabled>Select one</option>
+                            <option value="Dinner">Dinner</option>
+                            <option value="Lunch">Lunch</option>
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="Dessert">Dessert</option>
                         </UserInput >
                     </div>
 
@@ -140,14 +140,14 @@ const RecipeForm = ({ errors, touched, status }) => {
 
 const FormikForm = withFormik({
 
-    mapPropsToValues({ title, author, ingredients, instructions, category }) {
+    mapPropsToValues({ title, author, ingredients, instructions, category, history }) {
         return {
             title: title || "",
             author: author || "",
             ingredients: ingredients || "",
             instructions: instructions || "",
             category: category || "",
-
+            history
         };
     },
 
@@ -162,17 +162,27 @@ const FormikForm = withFormik({
 
     handleSubmit(values, { resetForm, setSubmitting, setStatus }) {
 
-        // let newRecipe = values;
-        // newRecipe.ingredients = newRecipe.ingredients.split(",")
-        console.log(`Recipe: \n"${JSON.stringify(values, null, 3)}`)
-
+         console.log({ 
+            title: values.title,
+            author: values.author,
+            ingredients: values.ingredients,
+            instructions: values.instructions,
+            category: values.category
+         })
         axios
-            .post("https://family-cookbook-api.herokuapp.com/recipes", values)
+            .post("https://family-cookbook-api.herokuapp.com/recipes", { 
+                title: values.title,
+                author: values.author,
+                ingredients: values.ingredients,
+                instructions: values.instructions,
+                category: values.category
+             })
             .then(res => {
                 console.log(res, "res");
                 setStatus(res.data);
                 resetForm();
-                setSubmitting(false)
+                setSubmitting(false);
+                values.history.push('/')
 
             })
 

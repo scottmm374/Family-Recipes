@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { Link } from 'react-router-dom';
 import RecipesCard from './RecipesCard';
 import styled from 'styled-components';
 
@@ -12,15 +13,26 @@ function RecipiesList({recipes}) {
    const [displayRecipes, setDisplayRecipes] = useState(recipes || []);
    console.log(JSON.stringify(recipes, null, 3));
 
+    const filterRecipes = value => {
+        const allRecipes = recipes;
+        const results = allRecipes.filter(recipe => {
+            return (recipe.category === value);
+        });
+
+        setDisplayRecipes(results);
+    } 
+
    return (
       <>
+
          <div className="filter-bar">
-            <button>All</button>
-            <button>Breakfast</button>
-            <button>Lunch</button>
-            <button>Dinner</button>
-            <button>Desert</button>
-            <button>Snacks</button>
+            <Link to='/add-recipe'><button>Add New Recipe</button></Link>
+            <button onClick={() => {setDisplayRecipes(recipes)}}>All</button>
+            <button onClick={() => {filterRecipes('Breakfast')}}>Breakfast</button>
+            <button onClick={() => {filterRecipes('Lunch')}}>Lunch</button>
+            <button onClick={() => {filterRecipes('Dinner')}}>Dinner</button>
+            <button onClick={() => {filterRecipes('Dessert')}}>Dessert</button>
+            <button onClick={() => {filterRecipes('Snack')}}>Snacks</button>
          </div>
          <CardsContainer>
             {displayRecipes.map(recipe => (

@@ -132,7 +132,7 @@ function App() {
          <Route exact path="/register" render={
             props => <RegisterForm {...props} userLogin={userLogin} />
          } />
-         {/* <Route exact path="/add-recipe" component={} /> */}
+         <Route exact path="/add-recipe" component={RecipeForm} />
          {/* <Route path="/recipe/:id" component={} /> */}
       </div>
    );

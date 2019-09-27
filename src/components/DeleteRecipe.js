@@ -16,17 +16,7 @@ function DeleteRecipe(props) {
 
 return (
     <div> 
-      {/* <h2>Title: {props.title}</h2>
-      <h4>Author: {props.author}</h4>
-      <div>
-          Ingredients: {props.ingredients}
-      </div>
-      <div>
-          instructions: {props.instructions}
-      </div>
-      <div>
-          Category: {props.category}
-      </div> */}
+
         <button onClick={handleDelete}>Delete Recipe</button>
     </div>
 )

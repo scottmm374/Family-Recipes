@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
+import DeleteRecipe from './DeleteRecipe';
 
 const colors = {
    attention: "#ed7769",
@@ -20,7 +21,7 @@ const Card = styled.div`
    width: 30%;
 `;
 
-function RecipesCard({ title, author, instructions, ingredients, category }) {
+function RecipesCard({ title, author, instructions, ingredients, category,  id }) {
    const renderIngredients = () => {
       const items = ingredients.split(",");
       return (
@@ -30,14 +31,18 @@ function RecipesCard({ title, author, instructions, ingredients, category }) {
 
    return (
       <Card>
-         <h3>{title.toUpperCase()}</h3>
-         <h4>{category}</h4>
-         <p>{author}</p>
+         <h1>{title.toUpperCase()}</h1>
+         <h2>{category}</h2>
+         <h3>{author}</h3>
          {
             (ingredients && ingredients.length > 0)
                ? renderIngredients()
                : null
          }
+
+         <p>{instructions}</p>
+
+         <DeleteRecipe id={id}/>
       </Card>
    )
 }
