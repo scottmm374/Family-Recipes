@@ -117,11 +117,12 @@ const RecipeForm = ({ errors, touched, status }) => {
                     <div>
                         {touched.category && errors.category && <Error>{errors.category}</Error>}
                         <UserInput component="select" name="category" placeholder="category">
-                            <option value="" selected disabled>Select one</option>
+                            <option value="" defaultValue disabled>Select one</option>
                             <option value="Dinner">Dinner</option>
                             <option value="Lunch">Lunch</option>
                             <option value="Breakfast">Breakfast</option>
                             <option value="Dessert">Dessert</option>
+                            <option value="Snacks">Snacks</option>
                         </UserInput >
                     </div>
 
@@ -140,14 +141,15 @@ const RecipeForm = ({ errors, touched, status }) => {
 
 const FormikForm = withFormik({
 
-    mapPropsToValues({ title, author, ingredients, instructions, category, history }) {
+    mapPropsToValues({ title, author, ingredients, instructions, category, history, addRecipe }) {
         return {
             title: title || "",
             author: author || "",
             ingredients: ingredients || "",
             instructions: instructions || "",
             category: category || "",
-            history
+            history,
+            addRecipe
         };
     },
 
@@ -178,12 +180,14 @@ const FormikForm = withFormik({
                 category: values.category
              })
             .then(res => {
-                console.log(res, "res");
-                setStatus(res.data);
-                resetForm();
-                setSubmitting(false);
-                values.history.push('/')
+                console.log("server Response: ", res.data);
+                values.addRecipe(res.data)
+                // setStatus(res.data);
+                // resetForm();
+                // setSubmitting(false);
 
+                values.history.push('/');
+            
             })
 
             .catch(err => {

@@ -32,6 +32,23 @@ function App() {
       setUserName(username);
       setLoggedIn(true);
    };
+
+  //  adds recipe to state
+   const addRecipe = recipe => {
+    setRecipes([...recipes, recipe])
+   }
+
+   const deleteRecipe = (recipeId, updateDisplayList) => {
+     const recipeList = recipes;
+
+     const newList = recipeList.filter((recipe) =>{
+        return (recipe.id !== recipeId);
+     })
+
+     setRecipes(newList)
+     updateDisplayList(newList)
+   }
+
    //Logs the user out of the application
    const userLogout = event => {
       event.preventDefault();
@@ -92,7 +109,7 @@ function App() {
                   :  <Link to="/login">Sign In</Link>
                }
             </div>
-            <img src="https://via.placeholder.com/1024x200" />
+        <img src='./img/app-header.jpg' height='347' width='1024' />
          </header>
          {/* <div className="filter-bar">
             <button>All</button>
@@ -121,7 +138,7 @@ function App() {
                   return <h2>Wow!! Such Empty...</h2>;
                } else {
                   return (
-                     <RecipiesList recipes={recipes} />
+                     <RecipiesList recipes={recipes} deleteRecipe={deleteRecipe} />
                   );
                }
             }
@@ -132,7 +149,9 @@ function App() {
          <Route exact path="/register" render={
             props => <RegisterForm {...props} userLogin={userLogin} />
          } />
-         <Route exact path="/add-recipe" component={RecipeForm} />
+         <Route exact path="/add-recipe" render={
+           props => <RecipeForm {...props} addRecipe={addRecipe} />
+         } />
          {/* <Route path="/recipe/:id" component={} /> */}
       </div>
    );
