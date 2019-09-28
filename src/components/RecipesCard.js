@@ -1,19 +1,12 @@
 import React from 'react';
 import styled from "styled-components";
 import DeleteRecipe from './DeleteRecipe';
-
-const colors = {
-   attention: "#ed7769",
-   accent: "#4b719c",
-   subtle: "#97a1a5",
-   textLight: "#efedec",
-   textDark: "#594236"
-};
+import colors from "../Colors.js";
 
 const Card = styled.div`
    background-color: ${colors.accent};
    border: 0;
-   box-shadow: 0 4px 8px 3px ${colors.subtle};
+   box-shadow: 0 4px 8px 3px ${colors.textDark};
    color: ${colors.textLight};
    cursor: pointer;
    padding: 1rem;

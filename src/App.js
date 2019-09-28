@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {Route, Link} from "react-router-dom";
 import axios from "axios";
-import './App.css';
 import { Icon } from 'semantic-ui-react';
+// import './App.css';
 
 import LoginForm from './components/LoginForm.js';
 import RecipeForm from './components/RecipeForm.js';
@@ -71,6 +71,8 @@ function App() {
       if (userData !== null) {
          userLogin(JSON.parse(userData), false);
       }
+
+      // document.body.style.backgroundColor = "magenta";
    }, []);
 
    //Whenever loggedIn changed
@@ -132,7 +134,7 @@ function App() {
          {/* {!loggedIn && <Redirect to="/login" />} */}
 
 
-         <Route exact path="/" render={ 
+         <Route path="/" render={ 
             props => {
                if (!recipes || recipes.length === 0) {
                   return <h2>Wow!! Such Empty...</h2>;

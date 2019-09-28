@@ -5,17 +5,9 @@ import { Header, Button } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import * as yup from 'yup';
 import axios from 'axios';
+import colors from "../Colors.js";
 
 // Styling 
-
-const colors = {
-    attention: "#ed7769",
-    accent: "#4b719c",
-    subtle: "#97a1a5",
-    textLight: "#efedec",
-    textDark: "#594236"
-};
-
 const FormOverlay = styled.div`
     background: #f26656b2;
     background: linear-gradient(74deg, #f26656b2 0%, #4b559cb2 100%);

@@ -1,3 +1,16 @@
+@import "https://use.fontawesome.com/releases/v5.9.0/css/all.css";
+@import "https://fonts.googleapis.com/css?family=Overpass|Permanent+Marker";
+
+#root {
+   min-height: 100vh;
+   background-color: magenta;
+   font-family: 'Overpass', Sans-Serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+   font-family: 'Permanent Marker', Cursive;
+}
+
 .App {
    width: 100%;
    max-width: 1024px;
