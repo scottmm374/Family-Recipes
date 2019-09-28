@@ -71,8 +71,6 @@ function App() {
       if (userData !== null) {
          userLogin(JSON.parse(userData), false);
       }
-
-      // document.body.style.backgroundColor = "magenta";
    }, []);
 
    //Whenever loggedIn changed
