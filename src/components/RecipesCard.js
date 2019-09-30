@@ -21,7 +21,7 @@ const Card = styled.div`
    width: 30%;
 `;
 
-function RecipesCard({ title, author, instructions, ingredients, category,  id, deleteRecipe, setDisplayRecipes }) {
+function RecipesCard({ title, author, instructions, ingredients, category, id, deleteRecipe, setDisplayRecipes }) {
    const renderIngredients = () => {
       const items = ingredients.split(",");
       return (
@@ -33,7 +33,7 @@ function RecipesCard({ title, author, instructions, ingredients, category,  id, 
       <Card>
          <h1>{title.toUpperCase()}</h1>
          <h2>{category}</h2>
-         <h3><h4>Author<br /></h4>{author}</h3>
+         <h3>{author}</h3>
          <h4>Ingredients</h4>
          {
             (ingredients && ingredients.length > 0)
@@ -41,9 +41,10 @@ function RecipesCard({ title, author, instructions, ingredients, category,  id, 
                : null
          }
 
-         <br /><p><h4>Instructions</h4>{instructions}</p>
+         <h4>Instructions</h4>
+         <p>{instructions}</p>
 
-         <DeleteRecipe id={id} deleteRecipe={deleteRecipe} setDisplayRecipes={setDisplayRecipes}/>
+         <DeleteRecipe id={id} deleteRecipe={deleteRecipe} setDisplayRecipes={setDisplayRecipes} />
       </Card>
    )
 }
