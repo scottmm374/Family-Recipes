@@ -88,8 +88,6 @@ const RecipeForm = ({ errors, touched, status }) => {
 
 
     return (
-
-
         <FormOverlay>
             <MainForm>
                 <Header>
@@ -118,9 +116,9 @@ const RecipeForm = ({ errors, touched, status }) => {
                         {touched.category && errors.category && <Error>{errors.category}</Error>}
                         <UserInput component="select" name="category" placeholder="category">
                             <option value="" defaultValue disabled>Select one</option>
-                            <option value="Dinner">Dinner</option>
-                            <option value="Lunch">Lunch</option>
                             <option value="Breakfast">Breakfast</option>
+                            <option value="Lunch">Lunch</option>
+                            <option value="Dinner">Dinner</option>
                             <option value="Dessert">Dessert</option>
                             <option value="Snacks">Snacks</option>
                         </UserInput >
@@ -162,7 +160,7 @@ const FormikForm = withFormik({
 
     }),
 
-    handleSubmit(values, { resetForm, setSubmitting, setStatus }) {
+    handleSubmit(values, {setSubmitting}) {
 
          console.log({ 
             title: values.title,
@@ -182,10 +180,6 @@ const FormikForm = withFormik({
             .then(res => {
                 console.log("server Response: ", res.data);
                 values.addRecipe(res.data)
-                // setStatus(res.data);
-                // resetForm();
-                // setSubmitting(false);
-
                 values.history.push('/');
             
             })
