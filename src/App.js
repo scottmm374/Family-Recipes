@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Route, Link} from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Route, Link } from "react-router-dom";
 import axios from "axios";
 import './App.css';
 import { Icon } from 'semantic-ui-react';
@@ -20,7 +20,7 @@ function App() {
 
    //Logs the user into the application which will trigger
    //  a call to the server for any stored recipes
-   const userLogin = ({user_id, username, token}, storeData=true) => {
+   const userLogin = ({ user_id, username, token }, storeData = true) => {
       if (storeData) {
          localStorage.setItem("user-data", JSON.stringify({
             user_id,
@@ -33,28 +33,28 @@ function App() {
       setLoggedIn(true);
    };
 
-  //  adds recipe to state
+   //  adds recipe to state
    const addRecipe = recipe => {
-    setRecipes([...recipes, recipe])
+      setRecipes([...recipes, recipe])
    }
 
    const deleteRecipe = (recipeId, updateDisplayList) => {
-     const recipeList = recipes;
+      const recipeList = recipes;
 
-     const newList = recipeList.filter((recipe) =>{
-        return (recipe.id !== recipeId);
-     })
+      const newList = recipeList.filter((recipe) => {
+         return (recipe.id !== recipeId);
+      })
 
-     setRecipes(newList)
-     updateDisplayList(newList)
+      setRecipes(newList)
+      updateDisplayList(newList)
    }
 
    //Logs the user out of the application
    const userLogout = event => {
       event.preventDefault();
-      
+
       localStorage.removeItem("user-data");
-      
+
       setUserId(null);
       setUserName(null);
       setRecipes(null);
@@ -103,42 +103,40 @@ function App() {
          <header>
             <h1>My Secret Family Recipes</h1>
             <div className="user-container">
-               {
-                  (loggedIn)
-                  ?  <div><Icon circular name="user" title="Sign Out" onClick={userLogout} /><p>{userName || "Anonymous"}</p></div>
-                  :  <Link to="/login">Sign In</Link>
-               }
-            </div>
-        <img src='./img/app-header.jpg' height='347' width='1024' />
-         </header>
-         {/* <div className="filter-bar">
-            <button>All</button>
-            <button>Breakfast</button>
-            <button>Lunch</button>
-            <button>Dinner</button>
-            <button>Desert</button>
-            <button>Snacks</button>
-         </div> */}
-
-         {/* <button onClick={() => {
-            console.log(`
             {
-               userName: ${userName},
-               userId: ${userId},
-               recipes: ${recipes},
-               loggedIn: ${loggedIn}
-            }`);
-         }} >State Variables</button> */}
-         {/* {!loggedIn && <Redirect to="/login" />} */}
+               (loggedIn)
+               ?  (
+                     <div>
+                        <Icon circular name="user" title="Sign Out" onClick={userLogout} />
+                        <p>{userName || "Anonymous"}</p>
+                     </div>
+                  )
+               : <Link to="/login"><button>Sign In</button></Link>
+            }
+            </div>
+            <img src='./img/app-header.jpg' height='347' width='1024' />
+         </header>
 
-
-         <Route exact path="/" render={ 
+         <Route exact path="/" render={
             props => {
-               if (!recipes || recipes.length === 0) {
-                  return <h2>Wow!! Such Empty...</h2>;
+               if (loggedIn) {
+                  if (!recipes || recipes.length === 0) {
+                     return (
+                        <div className="welcome-msg empty-list">
+                           <Link to='/add-recipe'><button>Add New Recipe</button></Link>
+                           <h2>Wow!! Such Empty...</h2>
+                        </div>
+                     );
+                  } else {
+                     return (
+                        <RecipiesList recipes={recipes} deleteRecipe={deleteRecipe} />
+                     );
+                  }
                } else {
                   return (
-                     <RecipiesList recipes={recipes} deleteRecipe={deleteRecipe} />
+                     <div className="welcome-msg">
+                        <h2>Welcome to My Secret Family Recipes!</h2>
+                     </div>
                   );
                }
             }
@@ -150,7 +148,7 @@ function App() {
             props => <RegisterForm {...props} userLogin={userLogin} />
          } />
          <Route exact path="/add-recipe" render={
-           props => <RecipeForm {...props} addRecipe={addRecipe} />
+            props => <RecipeForm {...props} addRecipe={addRecipe} />
          } />
          {/* <Route path="/recipe/:id" component={} /> */}
       </div>
