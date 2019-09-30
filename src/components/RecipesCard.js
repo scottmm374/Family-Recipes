@@ -33,14 +33,15 @@ function RecipesCard({ title, author, instructions, ingredients, category,  id, 
       <Card>
          <h1>{title.toUpperCase()}</h1>
          <h2>{category}</h2>
-         <h3>{author}</h3>
+         <h3><h4>Author<br /></h4>{author}</h3>
+         <h4>Ingredients</h4>
          {
             (ingredients && ingredients.length > 0)
                ? renderIngredients()
                : null
          }
 
-         <p>{instructions}</p>
+         <br /><p><h4>Instructions</h4>{instructions}</p>
 
          <DeleteRecipe id={id} deleteRecipe={deleteRecipe} setDisplayRecipes={setDisplayRecipes}/>
       </Card>
