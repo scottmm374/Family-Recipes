@@ -117,6 +117,8 @@ function App() {
             <img src='./img/app-header.jpg' height='347' width='1024' />
          </header>
 
+         
+         {/*This button is for only testing*/}
          {/* <button onClick={() => {
             console.log(`
                username: ${userName || ""},
