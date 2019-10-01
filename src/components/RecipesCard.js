@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
 import DeleteRecipe from './DeleteRecipe';
+import RecipeCardModal from './RecipeCardModal';
 
 const colors = {
    attention: "#ed7769",
@@ -34,7 +35,7 @@ function RecipesCard({ title, author, instructions, ingredients, category, id, d
          <h1>{title.toUpperCase()}</h1>
          <h2>{category}</h2>
          <h3>{author}</h3>
-         <h4>Ingredients</h4>
+         {/* <h4>Ingredients</h4>
          {
             (ingredients && ingredients.length > 0)
                ? renderIngredients()
@@ -42,9 +43,10 @@ function RecipesCard({ title, author, instructions, ingredients, category, id, d
          }
 
          <h4>Instructions</h4>
-         <p>{instructions}</p>
+         <p>{instructions}</p> */}
 
          <DeleteRecipe id={id} deleteRecipe={deleteRecipe} setDisplayRecipes={setDisplayRecipes} />
+         <RecipeCardModal title={title} author={author} instructions={instructions} ingredients={ingredients} />
       </Card>
    )
 }
