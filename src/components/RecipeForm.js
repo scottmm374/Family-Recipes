@@ -74,7 +74,7 @@ const Error = styled.p`
 
 // Main form
 
-const RecipeForm = ({ errors, touched, status }) => {
+const RecipeForm = ({values, errors, touched, status }) => {
     const [recipes, setRecipes] = useState([])
        
 
@@ -88,7 +88,11 @@ const RecipeForm = ({ errors, touched, status }) => {
 
 
     return (
-        <FormOverlay>
+        <FormOverlay className="overlay" onClick={event => {
+          if (event.target.matches(".overlay")) {
+            values.history.push("/");
+          }
+        }}>
             <MainForm>
                 <Header>
                     <NewHeader>Add Family Recipe</NewHeader>

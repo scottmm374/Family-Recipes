@@ -76,9 +76,13 @@ const HorizontalLine = styled.hr`
    width: 100%;
 `;
 
-function RegisterForm ({errors, touched}) {
+function RegisterForm ({values, errors, touched}) {
    return (
-      <FormOverlay>
+      <FormOverlay className="overlay" onClick={event => {
+         if (event.target.matches(".overlay")) {
+           values.history.push("/");
+         }
+       }}>
          <MainForm>
             <Header as="h1" icon textAlign="center">
                <Icon name="sign-in" circular/>
