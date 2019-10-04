@@ -117,7 +117,17 @@ function App() {
             <img src='./img/app-header.jpg' height='347' width='1024' />
          </header>
 
-         <Route exact path="/" render={
+         
+         {/*This button is for only testing*/}
+         {/* <button onClick={() => {
+            console.log(`
+               username: ${userName || ""},
+               user_id: ${userId || ""},
+               # recipes: ${(recipes && recipes.length) || 0},
+               logged_in: ${loggedIn || false},
+            `);
+         }}>Show State</button> */}
+         <Route path="/" render={
             props => {
                if (loggedIn) {
                   if (!recipes || recipes.length === 0) {
@@ -142,13 +152,31 @@ function App() {
             }
          } />
          <Route exact path="/login" render={
-            props => <LoginForm {...props} userLogin={userLogin} />
+            props => {
+               if (!loggedIn) {
+                  return <LoginForm {...props} userLogin={userLogin} />;
+               }
+
+               return null;
+            }
          } />
          <Route exact path="/register" render={
-            props => <RegisterForm {...props} userLogin={userLogin} />
+            props => {
+               if (!loggedIn) {
+                  return <RegisterForm {...props} userLogin={userLogin} />;
+               }
+
+               return null;
+            }
          } />
          <Route exact path="/add-recipe" render={
-            props => <RecipeForm {...props} addRecipe={addRecipe} />
+            props => {
+               if (loggedIn) {
+                  return <RecipeForm {...props} addRecipe={addRecipe} />;
+               }
+
+               return null;
+            }
          } />
          {/* <Route path="/recipe/:id" component={} /> */}
       </div>

@@ -1,5 +1,4 @@
 import React from "react";
-import {Link} from "react-router-dom";
 import { withFormik, Form, Field, ErrorMessage } from "formik";
 import styled from "styled-components";
 import {Header, Icon, Button} from "semantic-ui-react";
@@ -68,17 +67,14 @@ const ErrorBadge = styled.p`
    border-radius: 4px;
    padding: 5px 10px;
 `;
-const HorizontalLine = styled.hr`
-   background-image: linear-gradient(to right, #00000000, #594236bf, #00000000);
-   border: 0;
-   height: 2px;
-   margin: 1.7rem 0;
-   width: 100%;
-`;
 
-function RegisterForm ({errors, touched}) {
+function RegisterForm ({values}) {
    return (
-      <FormOverlay>
+      <FormOverlay className="overlay" onClick={event => {
+         if (event.target.matches(".overlay")) {
+            values.history.push("/");
+         }
+      }}>
          <MainForm>
             <Header as="h1" icon textAlign="center">
                <Icon name="sign-in" circular/>
