@@ -7,7 +7,7 @@
 }
 
 .App .filter-bar {
-  background-color: #ececec;
+  /* background-color: #ececec; */
   width: 100%;
   max-width: 1024px;
   padding: 5px;
@@ -36,4 +36,7 @@ h1 {
 
 p {
   font-family: "Roboto Condensed", sans-serif;
+}
+a {
+  margin-left: -57px;
 }

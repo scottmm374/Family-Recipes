@@ -22,6 +22,7 @@ const Card = styled.div`
   width: 30%;
   text-align: center;
   font-family: "Roboto", sans-serif;
+  border-radius: 10px;
 `;
 
 const NewH1 = styled.h1`
