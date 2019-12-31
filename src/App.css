@@ -1,17 +1,42 @@
+/* font-family: 'Roboto', sans-serif;   Bold*/
+
 .App {
-   width: 100%;
-   max-width: 1024px;
-   margin: 0 auto;
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
 }
 
 .App .filter-bar {
-   background-color: #ececec;
-   width: 100%;
-   max-width: 1024px;
-   padding: 5px;
+  /* background-color: #ececec; */
+  width: 100%;
+  max-width: 1024px;
+  padding: 5px;
 
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+}
 
-   display: flex;
-   flex-flow: row nowrap;
-   justify-content: space-evenly;
+#root {
+  background-image: url("./assets/recipe-background.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.sc-VigVT {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  background: #04040587;
+}
+
+h1 {
+  font-family: "Roboto", sans-serif;
+}
+
+p {
+  font-family: "Roboto Condensed", sans-serif;
+}
+a {
+  margin-left: -57px;
 }
